@@ -1,0 +1,8 @@
+SetWinEventHook
+
+EVENT_*
+WINEVENT_*
+
+GetMessage
+TranslateMessage
+DispatchMessage

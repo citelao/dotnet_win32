@@ -1,8 +1,10 @@
+// Event-hook functions
 SetWinEventHook
 
 EVENT_*
 WINEVENT_*
 
+// Message loop
 GetMessage
 TranslateMessage
 DispatchMessage

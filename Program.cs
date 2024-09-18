@@ -11,6 +11,19 @@ WINEVENTPROC HandleWinEvent = (hWinEventHook, ev, hwnd, idObject, idChild, dwEve
     Console.WriteLine($"Event: {ev} hwnd: {hwnd} idObject: {idObject} idChild: {idChild} dwEventThread: {dwEventThread} dwmsEventTime: {dwmsEventTime}");
 };
 
+// CsWin32 generates 2 overloads for functions like this: one that takes a raw
+// HMODULE for the 3rd arg (and returns a raw HWINEVENTHOOK) and one that takes
+// a SafeHandle instead (and returns an UnhookWinEventSafeHandle).
+//
+// We're using the latter overload here because the result is IDisposable and
+// can be cleaned up automatically for us. It's more idiomatic C#.
+
+// Unfortunately, this causes a bit of type-erasure, since the 3rd arg is now a
+// `SafeHandle`, which is an abstract class, rather than a specific handle to an
+// HMODULE. We're not passing anything real in here, so we create a
+// `NoReleaseSafeHandle` to pass in an empty value of `0`.
+//
+// See `NoReleaseSafeHandle` for an example that uses a non-empty value.
 Console.WriteLine("Registering event hook...");
 using var hook = PInvoke.SetWinEventHook(
     PInvoke.EVENT_SYSTEM_FOREGROUND,

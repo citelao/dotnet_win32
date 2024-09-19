@@ -71,8 +71,7 @@ unsafe
 PInvoke.ShowWindow(hwnd, SHOW_WINDOW_CMD.SW_NORMAL);
 PInvoke.UpdateWindow(hwnd);
 
-// Start a message loop to pump messages, or the hook won't be called.
-// https://stackoverflow.com/a/12931599/788168
+// Windows need a message loop, or you can't interact with them :)
 Console.WriteLine("Starting message loop...");
 Console.WriteLine("Press Ctrl-C to exit.");
 

@@ -12,6 +12,7 @@ DefWindowProc
 // like `COLOR_*`, try defining the full name of one, like `COLOR_WINDOW`. You
 // should get a nice warning when trying to build.
 SYS_COLOR_INDEX
+IDC_*
 
 // Message loop
 GetMessage

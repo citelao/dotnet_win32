@@ -21,15 +21,25 @@ unsafe
     {
         var wndClass = new WNDCLASSEXW
         {
-            // cbClsExtra = 0,
+            // You need to include the size of this struct.
             cbSize = (uint)Marshal.SizeOf<WNDCLASSEXW>(),
-            // cbWndExtra = 0,
+
+            // Otherwise, when you resize this, the window will not paint the
+            // new areas.
             hbrBackground = new HBRUSH((nint)SYS_COLOR_INDEX.COLOR_WINDOW + 1),
-            // hCursor = PInvoke.LoadCursorW(HINSTANCE.Null, IDC_ARROW),
-            // hIcon = PInvoke.LoadIconW(HINSTANCE.Null, IDI_APPLICATION),
-            // hIconSm = PInvoke.LoadIconW(HINSTANCE.Null, IDI_APPLICATION),
+
+            // Otherwise, the mouse cursor will remain whatever it was when it
+            // entered your HWND (e.g. resize arrows).
+            hCursor = PInvoke.LoadCursor(HINSTANCE.Null, PInvoke.IDC_ARROW),
+
+            // Seems to work without this, but it seems sketchy to leave it out.
             hInstance = PInvoke.GetModuleHandle(default(PCWSTR)),
+
+            // Required to actually run your WndProc (and the app will crash if
+            // null).
             lpfnWndProc = WndProc,
+
+            // Required to identify the window class in CreateWindowEx.
             lpszClassName = pClassName,
         };
 
@@ -74,6 +84,7 @@ while (PInvoke.GetMessage(out var msg, HWND.Null, 0, 0))
 
 static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
 {
+    Console.WriteLine($"Message: {msg}");
     return PInvoke.DefWindowProc(hwnd, msg, wParam, lParam);
 }
 

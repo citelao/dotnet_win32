@@ -1,5 +1,7 @@
-// Create window
+// Window fns
 CreateWindowEx
+ShowWindow
+UpdateWindow
 
 // Message loop
 GetMessage

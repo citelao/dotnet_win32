@@ -1,7 +1,29 @@
 ﻿using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
-// using Windows.Win32.UI.Accessibility;
+using Windows.Win32.UI.WindowsAndMessaging;
+
+HWND hwnd;
+unsafe
+{
+    hwnd = PInvoke.CreateWindowEx(
+        0, // dwExStyle
+        "STATIC", // lpClassName
+        "Hello, Windows!", // lpWindowName
+        WINDOW_STYLE.WS_OVERLAPPEDWINDOW, // dwStyle
+        0, // x
+        0, // y
+        640, // nWidth
+        480, // nHeight
+        HWND.Null, // hWndParent
+        new NoReleaseSafeHandle(0), // hMenu
+        new NoReleaseSafeHandle(0), // hInstance
+        null // lpParam
+    );
+}
+
+PInvoke.ShowWindow(hwnd, SHOW_WINDOW_CMD.SW_NORMAL);
+PInvoke.UpdateWindow(hwnd);
 
 // Start a message loop to pump messages, or the hook won't be called.
 // https://stackoverflow.com/a/12931599/788168

@@ -84,8 +84,21 @@ while (PInvoke.GetMessage(out var msg, HWND.Null, 0, 0))
 
 static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
 {
-    Console.WriteLine($"Message: {msg}");
-    return PInvoke.DefWindowProc(hwnd, msg, wParam, lParam);
+    switch (msg)
+    {
+        case PInvoke.WM_CLOSE:
+            PInvoke.DestroyWindow(hwnd);
+            break;
+
+        case PInvoke.WM_DESTROY:
+            PInvoke.PostQuitMessage(0);
+            break;
+        
+        default:
+            return PInvoke.DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+
+    return new LRESULT(0);
 }
 
 // Adapted directly from:

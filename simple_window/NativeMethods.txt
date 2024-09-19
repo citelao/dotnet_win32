@@ -13,6 +13,10 @@ DefWindowProc
 // should get a nice warning when trying to build.
 SYS_COLOR_INDEX
 IDC_*
+WM_*
+
+DestroyWindow
+PostQuitMessage
 
 // Message loop
 GetMessage

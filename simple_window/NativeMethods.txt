@@ -1,0 +1,7 @@
+// Create window
+CreateWindowEx
+
+// Message loop
+GetMessage
+TranslateMessage
+DispatchMessage

@@ -1,8 +1,110 @@
 ﻿using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
+using Windows.Win32.UI.Shell;
 using Windows.Win32.UI.WindowsAndMessaging;
+using Windows.Win32.Graphics.Gdi;
 
+
+// Heavily inspired by https://github.com/microsoft/CsWin32/blob/99ddd314ea359d3a97afa82c735b6a25eb25ea32/test/WinRTInteropTest/Program.cs
+
+const string WindowClassName = "SimpleWindow";
+
+// Use the variable style function here to get easy access to the full function
+// signature. This function isn't used directly.
+// WNDPROC intermediateWndProc = (hwnd, msg, wParam, lParam) =>
+// {
+//     return WndProc(hwnd, msg, wParam, lParam);
+// };
+
+unsafe
+{
+    fixed (char* pClassName = WindowClassName)
+    {
+        var wndClass = new WNDCLASSEXW
+        {
+            // You need to include the size of this struct.
+            cbSize = (uint)Marshal.SizeOf<WNDCLASSEXW>(),
+
+            // Otherwise, when you resize this, the window will not paint the
+            // new areas.
+            hbrBackground = new HBRUSH((nint)SYS_COLOR_INDEX.COLOR_WINDOW + 1),
+
+            // Otherwise, the mouse cursor will remain whatever it was when it
+            // entered your HWND (e.g. resize arrows).
+            hCursor = PInvoke.LoadCursor(HINSTANCE.Null, PInvoke.IDC_ARROW),
+
+            // Seems to work without this, but it seems sketchy to leave it out.
+            hInstance = PInvoke.GetModuleHandle(default(PCWSTR)),
+
+            // Required to actually run your WndProc (and the app will crash if
+            // null).
+            lpfnWndProc = WndProc,
+
+            // Required to identify the window class in CreateWindowEx.
+            lpszClassName = pClassName,
+        };
+
+        // We ignore the returned class atom & use the class name directly.
+        // https://devblogs.microsoft.com/oldnewthing/20080501-00/?p=22503
+        PInvoke.RegisterClassEx(wndClass);
+    }
+}
+
+HWND hwnd;
+unsafe
+{
+    hwnd = PInvoke.CreateWindowEx(
+        0, // dwExStyle
+        WindowClassName,
+        "Hello, Windows!", // lpWindowName
+        WINDOW_STYLE.WS_OVERLAPPEDWINDOW, // dwStyle
+        0, // x
+        0, // y
+        640, // nWidth
+        480, // nHeight
+        HWND.Null, // hWndParent
+        new NoReleaseSafeHandle(0), // hMenu
+        new NoReleaseSafeHandle(0), // hInstance
+        null // lpParam
+    );
+}
+
+PInvoke.ShowWindow(hwnd, SHOW_WINDOW_CMD.SW_NORMAL);
+PInvoke.UpdateWindow(hwnd);
+
+var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
+
+// https://learn.microsoft.com/en-us/windows/win32/shell/notification-area
+// https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa
+// https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyicona
+var notificationIconData = new NOTIFYICONDATAW
+{
+    cbSize = (uint)Marshal.SizeOf<NOTIFYICONDATAW>(),
+
+    hWnd = hwnd,
+    // uID = 0,
+    uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_ICON | NOTIFY_ICON_DATA_FLAGS.NIF_GUID | NOTIFY_ICON_DATA_FLAGS.NIF_TIP | NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP,
+    uCallbackMessage = 0,
+
+    // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadicona
+    // https://learn.microsoft.com/en-us/windows/win32/menurc/about-icons
+    hIcon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_APPLICATION),
+    szTip = "Simple Systray",
+    guidItem = guid,
+
+    Anonymous = new()
+    {
+        uVersion = PInvoke.NOTIFYICON_VERSION_4
+    }
+};
+var ret = PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData);
+
+Console.WriteLine($"Shell_NotifyIcon returned: {ret}");
+
+ret = PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, notificationIconData);
+
+Console.WriteLine($"Shell_NotifyIcon returned: {ret}");
 
 // ----
 
@@ -15,6 +117,25 @@ while (PInvoke.GetMessage(out var msg, HWND.Null, 0, 0))
 {
     PInvoke.TranslateMessage(msg);
     PInvoke.DispatchMessage(msg);
+}
+
+static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+        case PInvoke.WM_CLOSE:
+            PInvoke.DestroyWindow(hwnd);
+            break;
+
+        case PInvoke.WM_DESTROY:
+            PInvoke.PostQuitMessage(0);
+            break;
+        
+        default:
+            return PInvoke.DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+
+    return new LRESULT(0);
 }
 
 // Adapted directly from:

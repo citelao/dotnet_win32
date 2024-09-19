@@ -1,3 +1,5 @@
+// Shell_NotifyIcon
+
 // Message loop
 GetMessage
 TranslateMessage

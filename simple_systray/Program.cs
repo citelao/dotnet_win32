@@ -8,7 +8,7 @@ using Windows.Win32.Graphics.Gdi;
 
 // Heavily inspired by https://github.com/microsoft/CsWin32/blob/99ddd314ea359d3a97afa82c735b6a25eb25ea32/test/WinRTInteropTest/Program.cs
 
-const string WindowClassName = "SimpleWindow";
+const string WindowClassName = "SimpleSystrayWindow";
 
 // Use the variable style function here to get easy access to the full function
 // signature. This function isn't used directly.
@@ -25,14 +25,6 @@ unsafe
         {
             // You need to include the size of this struct.
             cbSize = (uint)Marshal.SizeOf<WNDCLASSEXW>(),
-
-            // Otherwise, when you resize this, the window will not paint the
-            // new areas.
-            hbrBackground = new HBRUSH((nint)SYS_COLOR_INDEX.COLOR_WINDOW + 1),
-
-            // Otherwise, the mouse cursor will remain whatever it was when it
-            // entered your HWND (e.g. resize arrows).
-            hCursor = PInvoke.LoadCursor(HINSTANCE.Null, PInvoke.IDC_ARROW),
 
             // Seems to work without this, but it seems sketchy to leave it out.
             hInstance = PInvoke.GetModuleHandle(default(PCWSTR)),
@@ -58,7 +50,7 @@ unsafe
         0, // dwExStyle
         WindowClassName,
         "Hello, Windows!", // lpWindowName
-        WINDOW_STYLE.WS_OVERLAPPEDWINDOW, // dwStyle
+        0, // dwStyle
         0, // x
         0, // y
         640, // nWidth
@@ -70,11 +62,11 @@ unsafe
     );
 }
 
-PInvoke.ShowWindow(hwnd, SHOW_WINDOW_CMD.SW_NORMAL);
-PInvoke.UpdateWindow(hwnd);
-
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
 
+// https://github.com/microsoft/WindowsAppSDK/discussions/519
+// https://github.com/microsoft/WindowsAppSDK/issues/713
+// https://github.com/File-New-Project/EarTrumpet/blob/bd42f1e235386c35c0989df8f2af8aba951f1848/EarTrumpet/UI/Helpers/ShellNotifyIcon.cs#L18
 // https://learn.microsoft.com/en-us/windows/win32/shell/notification-area
 // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa
 // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyicona
@@ -83,8 +75,9 @@ var notificationIconData = new NOTIFYICONDATAW
     cbSize = (uint)Marshal.SizeOf<NOTIFYICONDATAW>(),
 
     hWnd = hwnd,
-    // uID = 0,
+
     uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_ICON | NOTIFY_ICON_DATA_FLAGS.NIF_GUID | NOTIFY_ICON_DATA_FLAGS.NIF_TIP | NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP,
+
     uCallbackMessage = 0,
 
     // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadicona
@@ -98,20 +91,19 @@ var notificationIconData = new NOTIFYICONDATAW
         uVersion = PInvoke.NOTIFYICON_VERSION_4
     }
 };
-var ret = PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData);
-
-Console.WriteLine($"Shell_NotifyIcon returned: {ret}");
-
-ret = PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, notificationIconData);
-
-Console.WriteLine($"Shell_NotifyIcon returned: {ret}");
-
-// ----
-
+if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData))
+{
+    Console.Error.WriteLine("Failed to add icon to the notification area.");
+    return;
+}
+if(!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, notificationIconData))
+{
+    Console.Error.WriteLine("Failed to set version of icon in the notification area.");
+    return;
+}
 
 Console.WriteLine("Starting message loop...");
 Console.WriteLine("Press Ctrl-C to exit.");
-
 
 while (PInvoke.GetMessage(out var msg, HWND.Null, 0, 0))
 {

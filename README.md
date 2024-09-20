@@ -1,13 +1,25 @@
-# .NET window events watcher
+# .NET + Win32 examples
 
-This example app shows the minimum required code to call `SetWinEventHook` from
-.NET code. This demo listens for foreground-changed events across the OS.
+These self-contained example apps present the minimum required code to call
+different Win32 APIs from .NET code, using modern techniques like
+[CsWin32](https://github.com/microsoft/CsWin32). 
+
+## Demos
+
+* **SetWinEventHook** (`/window_events/`): listen to foreground changes across the OS
+* **CreateWindowEx** (`/simple_window/`): create a simple window
+* **Shell_NotifyIcon** (`/simple_systray/`): create a simple systray icon
 
 ## Build & run
 
 ```pwsh
+dotnet build
+
+# Run with the project name:
+dotnet run --project .\simple_window\simple_window.csproj
+# or
+cd .\simple_window
 dotnet run
-# ctrl-c to exit
 ```
 
 ## See also

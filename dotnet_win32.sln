@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "simple_window", "simple_win
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "simple_systray", "simple_systray\simple_systray.csproj", "{63A25A50-6E89-4520-9002-4D30624CA997}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robust_systray", "robust_systray\robust_systray.csproj", "{00CAA283-CDD4-4683-B053-F18E453EFCDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{63A25A50-6E89-4520-9002-4D30624CA997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A25A50-6E89-4520-9002-4D30624CA997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A25A50-6E89-4520-9002-4D30624CA997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CAA283-CDD4-4683-B053-F18E453EFCDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CAA283-CDD4-4683-B053-F18E453EFCDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CAA283-CDD4-4683-B053-F18E453EFCDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CAA283-CDD4-4683-B053-F18E453EFCDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

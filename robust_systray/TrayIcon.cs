@@ -5,6 +5,12 @@ using Windows.Win32.UI.Shell;
 
 internal class TrayIcon
 {
+    private string _tooltip = string.Empty;
+    public string Tooltip {
+        set { SetTooltip(value); }
+        get { return _tooltip; }
+    }
+
     public readonly Guid Guid;
     public readonly HWND OwnerHwnd;
 
@@ -41,7 +47,7 @@ internal class TrayIcon
             hIcon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_APPLICATION),
 
             // Optional. You probably want a tooltip for your icon, though.
-            szTip = "Simple Systray",
+            szTip = _tooltip,
 
             // Required. A GUID to identify the icon. This should be persistent across
             // launches and unique to your app!
@@ -64,5 +70,22 @@ internal class TrayIcon
         {
             throw new Exception("Failed to set version of icon in the notification area.");
         }
+    }
+
+    private void SetTooltip(string newTip)
+    {
+        var notificationIconData = new NOTIFYICONDATAW
+        {
+            cbSize = (uint)Marshal.SizeOf<NOTIFYICONDATAW>(),
+            hWnd = OwnerHwnd,
+            uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_TIP | NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP | NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+            szTip = newTip,
+            guidItem = Guid,
+        };
+        if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))
+        {
+            throw new Exception("Failed to modify icon in the notification area.");
+        }
+        _tooltip = newTip;
     }
 }

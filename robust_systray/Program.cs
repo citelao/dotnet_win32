@@ -63,7 +63,10 @@ unsafe
 }
 
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
-var trayIcon = new TrayIcon(guid, hwnd);
+var trayIcon = new TrayIcon(guid, hwnd)
+{
+    Tooltip = "Hello, Windows!"
+};
 
 Console.WriteLine("Starting message loop...");
 Console.WriteLine("Press Ctrl-C to exit.");

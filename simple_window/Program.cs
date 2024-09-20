@@ -19,6 +19,8 @@ unsafe
 {
     fixed (char* pClassName = WindowClassName)
     {
+        // https://stackoverflow.com/a/79004730/788168
+        // https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassexa
         var wndClass = new WNDCLASSEXW
         {
             // You need to include the size of this struct.
@@ -45,13 +47,16 @@ unsafe
 
         // We ignore the returned class atom & use the class name directly.
         // https://devblogs.microsoft.com/oldnewthing/20080501-00/?p=22503
+        // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerclassexa
         PInvoke.RegisterClassEx(wndClass);
     }
 }
 
+
 HWND hwnd;
 unsafe
 {
+    // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw
     hwnd = PInvoke.CreateWindowEx(
         0, // dwExStyle
         WindowClassName,

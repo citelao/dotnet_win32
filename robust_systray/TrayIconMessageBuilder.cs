@@ -9,8 +9,13 @@ internal class TrayIconMessageBuilder
 {
     public Guid Guid;
     public HWND HWND;
+
+    // Limited to 128 chars in Win2000+? Otherwise 64?
+    // TODO: validate
     public string? Tooltip = null;
     public HICON Icon;
+
+    // TODO: balloon? e.g. szInfo; szInfoTitle; dwInfoFlags; hBalloonIcon
 
     public NOTIFYICONDATAW Build()
     {

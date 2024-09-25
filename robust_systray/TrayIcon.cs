@@ -26,10 +26,9 @@ internal class TrayIcon
         Guid = guid;
         OwnerHwnd = ownerHwnd;
 
-        var notificationIconData = new TrayIconMessageBuilder
+        var notificationIconData = new TrayIconMessageBuilder(guid: Guid)
         {
             HWND = ownerHwnd,
-            Guid = guid,
             Tooltip = _tooltip,
             Icon = _icon,
         }.Build();
@@ -45,9 +44,8 @@ internal class TrayIcon
 
     private void SetTooltip(string newTip)
     {
-        var notificationIconData = new TrayIconMessageBuilder
+        var notificationIconData = new TrayIconMessageBuilder(guid: Guid)
         {
-            Guid = Guid,
             Tooltip = newTip,
         }.Build();
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))
@@ -59,9 +57,8 @@ internal class TrayIcon
 
     private void SetIcon(HICON newIcon)
     {
-        var notificationIconData = new TrayIconMessageBuilder
+        var notificationIconData = new TrayIconMessageBuilder(guid: Guid)
         {
-            Guid = Guid,
             Icon = newIcon,
         }.Build();
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))

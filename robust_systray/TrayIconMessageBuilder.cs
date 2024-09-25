@@ -8,7 +8,7 @@ using Windows.Win32.UI.WindowsAndMessaging;
 internal class TrayIconMessageBuilder
 {
     public Guid Guid;
-    public HWND HWND;
+    public HWND? HWND = null;
 
     // Limited to 128 chars in Win2000+? Otherwise 64?
     // TODO: validate
@@ -25,6 +25,11 @@ internal class TrayIconMessageBuilder
     public HICON Icon;
 
     // TODO: balloon? e.g. szInfo; szInfoTitle; dwInfoFlags; hBalloonIcon
+
+    public TrayIconMessageBuilder(Guid guid)
+    {
+        Guid = guid;
+    }
 
     public NOTIFYICONDATAW Build()
     {
@@ -60,7 +65,7 @@ internal class TrayIconMessageBuilder
 
             // Required. An HWND is required to register the icon with the system.
             // Window messages go there.
-            hWnd = HWND,
+            hWnd = HWND ?? default,
 
             // Required. Indicates which of the other members contain valid data.
             // NIF_TIP and NIF_SHOWTIP are only required if you want to use szTip.

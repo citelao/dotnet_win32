@@ -13,6 +13,15 @@ internal class TrayIconMessageBuilder
     // Limited to 128 chars in Win2000+? Otherwise 64?
     // TODO: validate
     public string? Tooltip = null;
+
+    // By default, if you update an existing (v4) tray icon but *don't* specify
+    // that it should continue showing a tooltip, any existing tooltip will be
+    // hidden. We invert that behavior here.
+    //
+    // If you are updating a tray icon and explicitly want to hide any existing
+    // tooltips, set this to false.
+    public bool ShowTooltip = true;
+
     public HICON Icon;
 
     // TODO: balloon? e.g. szInfo; szInfoTitle; dwInfoFlags; hBalloonIcon
@@ -24,13 +33,17 @@ internal class TrayIconMessageBuilder
         // We always use GUID IDs for these tray icons, so specify by it
         // default.
         NOTIFY_ICON_DATA_FLAGS flags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID;
+        if (ShowTooltip)
+        {
+            // If not specified, any existing tooltip will be hidden.
+            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
         if (Tooltip != null)
         {
-            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_TIP | NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_TIP;
         }
         if (Icon != HICON.Null)
         {
-            // TODO: handle updates that don't change the icon
             flags |= NOTIFY_ICON_DATA_FLAGS.NIF_ICON;
         }
 

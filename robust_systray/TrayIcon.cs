@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.Shell;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 internal class TrayIcon
 {
@@ -9,6 +10,12 @@ internal class TrayIcon
     public string Tooltip {
         set { SetTooltip(value); }
         get { return _tooltip; }
+    }
+
+    private HICON _icon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_APPLICATION);
+    public HICON Icon {
+        set { SetIcon(value); }
+        get { return _icon; }
     }
 
     public readonly Guid Guid;
@@ -24,7 +31,7 @@ internal class TrayIcon
             HWND = ownerHwnd,
             Guid = guid,
             Tooltip = _tooltip,
-            Icon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_APPLICATION)
+            Icon = _icon,
         }.Build();
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData))
         {
@@ -38,17 +45,29 @@ internal class TrayIcon
 
     private void SetTooltip(string newTip)
     {
-        Console.WriteLine("hi");
         var notificationIconData = new TrayIconMessageBuilder
         {
             Guid = Guid,
             Tooltip = newTip,
         }.Build();
-        Console.WriteLine(notificationIconData);
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))
         {
             throw new Exception("Failed to modify icon in the notification area.");
         }
         _tooltip = newTip;
+    }
+
+    private void SetIcon(HICON newIcon)
+    {
+        var notificationIconData = new TrayIconMessageBuilder
+        {
+            Guid = Guid,
+            Icon = newIcon,
+        }.Build();
+        if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))
+        {
+            throw new Exception("Failed to modify icon in the notification area.");
+        }
+        _icon = newIcon;
     }
 }

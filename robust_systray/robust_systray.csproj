@@ -25,7 +25,11 @@
     <MSBuild Condition=" '$(Platform)' == 'x86' " Projects="$(MSBuildProjectFile)" Properties="Platform=x64;PlatFormTarget=x64" RunEachTargetSeparately="true" />
   </Target>
 
-  <!-- Add images -->
+  <!--
+    Add images
+
+    https://stackoverflow.com/a/44378406/788168
+  -->
   <ItemGroup>
     <None Update="assets/simple_icon.ico" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

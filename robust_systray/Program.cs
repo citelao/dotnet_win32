@@ -56,18 +56,13 @@ unsafe
         640, // nWidth
         480, // nHeight
         HWND.Null, // hWndParent
-        new NoReleaseSafeHandle(0), // hMenu
-        new NoReleaseSafeHandle(0), // hInstance
+        NoReleaseSafeHandle.Null, // hMenu
+        NoReleaseSafeHandle.Null, // hInstance
         null // lpParam
     );
 }
 
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
-
-// Print current working directory
-var cwd = System.IO.Directory.GetCurrentDirectory();
-Console.WriteLine($"Current working directory: {cwd}");
-
 using var icon = IconHelper.LoadIconFromFile("assets/simple_icon.ico");
 var trayIcon = new TrayIcon(guid, hwnd)
 {

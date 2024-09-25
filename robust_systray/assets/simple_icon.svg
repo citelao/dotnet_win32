@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.00694,0,0,2.18523,-28.9534,-0.937895)">
+        <path d="M20.271,4.09L20.271,11.412C20.271,13.433 19.079,15.073 17.61,15.073L12.289,15.073C10.821,15.073 9.629,13.433 9.629,11.412L9.629,4.09C9.629,2.07 10.821,0.429 12.289,0.429L17.61,0.429C19.079,0.429 20.271,2.07 20.271,4.09Z" style="fill:rgb(201,40,98);"/>
+    </g>
+    <g transform="matrix(3.00694,0,0,2.18523,-28.9534,-0.937895)">
+        <path d="M20.271,4.09L20.271,11.412C20.271,13.433 19.079,15.073 17.61,15.073L12.289,15.073C10.821,15.073 9.629,13.433 9.629,11.412L9.629,4.09C9.629,2.07 10.821,0.429 12.289,0.429L17.61,0.429C19.079,0.429 20.271,2.07 20.271,4.09Z" style="fill:url(#_Radial1);"/>
+    </g>
+    <g transform="matrix(0.625,0,0,0.625,2.25,7)">
+        <circle cx="10" cy="20" r="4"/>
+    </g>
+    <g transform="matrix(0.625,0,0,0.625,17.25,7)">
+        <circle cx="10" cy="20" r="4"/>
+    </g>
+    <g transform="matrix(1,0,0,1,-1.31666,-1.07037)">
+        <path d="M13.874,27.45C13.483,26.984 16.967,27.513 18.891,27.116C21.062,26.837 22.932,25.336 23.323,25.803C23.714,26.27 22.753,29.652 21.238,29.916C19.664,30.19 14.265,27.917 13.874,27.45Z"/>
+    </g>
+    <defs>
+        <radialGradient id="_Radial1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(5.32102,0,0,7.3219,14.9499,5.92062)"><stop offset="0" style="stop-color:rgb(201,40,98);stop-opacity:0"/><stop offset="0.57" style="stop-color:rgb(62,12,30);stop-opacity:0.07"/><stop offset="1" style="stop-color:black;stop-opacity:0.1"/></radialGradient>
+    </defs>
+</svg>

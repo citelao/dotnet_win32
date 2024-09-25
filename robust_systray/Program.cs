@@ -72,9 +72,8 @@ using var icon = IconHelper.LoadIconFromFile("assets/simple_icon.ico");
 var trayIcon = new TrayIcon(guid, hwnd)
 {
     Tooltip = "Hello, Windows!",
-    Icon = (HICON)icon.DangerousGetHandle() //IconHelper.LoadSystemIcon(PInvoke.IDI_ASTERISK),
+    Icon = (HICON)icon.DangerousGetHandle(),
 };
-trayIcon.Icon = (HICON)icon.DangerousGetHandle();
 
 Console.WriteLine("Starting message loop...");
 Console.WriteLine("Press Ctrl-C to exit.");

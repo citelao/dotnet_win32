@@ -59,8 +59,14 @@ internal class TrayIconMessageBuilder
             // Optional. You probably want a tooltip for your icon, though.
             szTip = Tooltip,
 
-            // Required. A GUID to identify the icon. This should be persistent across
-            // launches and unique to your app!
+            // Required. A GUID to identify the icon. This should be persistent
+            // across launches and unique to your app!
+            //
+            // We use GUID identifiers and not the alternative (HWND + a uint
+            // ID) because HWNDs are not typically persistent across app
+            // relaunches & reboots---so if you want Windows to remember if your
+            // app has been pinned to the tray, you need the consistent GUID.
+            // (TODO: validate completely).
             guidItem = Guid,
 
             Anonymous = new()

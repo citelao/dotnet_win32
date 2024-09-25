@@ -9,11 +9,13 @@ winget install ImageMagick.ImageMagick
 ## Inner loop
 
 1. Edit the icon
-2. Export as PNG
-3. Convert to BMP files using the `magick` command below:
+2. Export as SVG
+3. Convert to ICO files using the `magick` command below:
 
 ```
-magick simple_icon.png `
+magick `
+        -background none `
+        simple_icon.svg `
         -resize 32x32 `
         -define icon:auto-resize="32,16" `
         simple_icon.ico
@@ -29,13 +31,11 @@ magick simple_icon.png `
 ```
 
 ```pwsh
-magick simple_icon.svg `
-        -alpha on `
-        -resize 32x32 `
-        -transparent white `
-        -define icon:auto-resize="32,16" `
+magick `
         -background none `
-        simple_icon.ico
+        simple_icon.svg `
+        -resize 64x64 `
+        simple_icon.png
 ```
 
 ```

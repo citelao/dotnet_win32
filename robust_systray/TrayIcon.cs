@@ -19,13 +19,13 @@ internal class TrayIcon
         Guid = guid;
         OwnerHwnd = ownerHwnd;
 
-        var notificationIconData = (new TrayIconMessageBuilder()
+        var notificationIconData = new TrayIconMessageBuilder
         {
             HWND = ownerHwnd,
             Guid = guid,
             Tooltip = _tooltip,
             Icon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_APPLICATION)
-        }).Build();
+        }.Build();
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData))
         {
             throw new Exception("Failed to add icon to the notification area.");
@@ -38,14 +38,13 @@ internal class TrayIcon
 
     private void SetTooltip(string newTip)
     {
-        var notificationIconData = new NOTIFYICONDATAW
+        Console.WriteLine("hi");
+        var notificationIconData = new TrayIconMessageBuilder
         {
-            cbSize = (uint)Marshal.SizeOf<NOTIFYICONDATAW>(),
-            hWnd = OwnerHwnd,
-            uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_TIP | NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP | NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
-            szTip = newTip,
-            guidItem = Guid,
-        };
+            Guid = Guid,
+            Tooltip = newTip,
+        }.Build();
+        Console.WriteLine(notificationIconData);
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_MODIFY, notificationIconData))
         {
             throw new Exception("Failed to modify icon in the notification area.");

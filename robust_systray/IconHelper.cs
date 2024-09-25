@@ -18,8 +18,7 @@ internal class IconHelper
             GDI_IMAGE_TYPE.IMAGE_ICON,
             0,
             0,
-            // TODO: LR_DEFAULTSIZE?
-            IMAGE_FLAGS.LR_LOADFROMFILE
+            IMAGE_FLAGS.LR_LOADFROMFILE | IMAGE_FLAGS.LR_DEFAULTSIZE
         );
 
         if (safeIconHandle.IsInvalid)

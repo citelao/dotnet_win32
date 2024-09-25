@@ -20,17 +20,20 @@ internal class TrayIcon
 
     public readonly Guid Guid;
     public readonly HWND OwnerHwnd;
+    public readonly uint? CallbackMessage = null;
 
-    public TrayIcon(Guid guid, HWND ownerHwnd)
+    public TrayIcon(Guid guid, HWND ownerHwnd, uint? callbackMessage = null)
     {
         Guid = guid;
         OwnerHwnd = ownerHwnd;
+        CallbackMessage = callbackMessage;
 
         var notificationIconData = new TrayIconMessageBuilder(guid: Guid)
         {
             HWND = ownerHwnd,
             Tooltip = _tooltip,
             Icon = _icon,
+            CallbackMessage = CallbackMessage,
         }.Build();
         if (!PInvoke.Shell_NotifyIcon(NOTIFY_ICON_MESSAGE.NIM_ADD, notificationIconData))
         {

@@ -10,6 +10,8 @@ internal class TrayIconMessageBuilder
     public Guid Guid;
     public HWND? HWND = null;
 
+    public uint? CallbackMessage = null;
+
     // Limited to 128 chars in Win2000+? Otherwise 64?
     // TODO: validate
     public string? Tooltip = null;
@@ -51,6 +53,10 @@ internal class TrayIconMessageBuilder
         {
             flags |= NOTIFY_ICON_DATA_FLAGS.NIF_ICON;
         }
+        if (CallbackMessage != null)
+        {
+            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE;
+        }
 
         // https://github.com/microsoft/WindowsAppSDK/discussions/519
         // https://github.com/microsoft/WindowsAppSDK/issues/713
@@ -71,8 +77,8 @@ internal class TrayIconMessageBuilder
             // NIF_TIP and NIF_SHOWTIP are only required if you want to use szTip.
             uFlags = flags,
 
-            // TODO
-            uCallbackMessage = 0,
+            // Basically required. The WM to use for tray icon messages.
+            uCallbackMessage = CallbackMessage ?? 0,
 
             // Required. The icon to display.
             // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadicona

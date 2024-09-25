@@ -5,6 +5,7 @@ NOTIFY_ICON_DATA_FLAGS
 LoadImage
 LoadIcon
 IDI_*
+RegisterWindowMessage
 
 // Window fns
 RegisterClassEx

@@ -63,8 +63,10 @@ unsafe
 }
 
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
-using var icon = IconHelper.LoadIconFromFile("assets/simple_icon.ico");
-var trayIcon = new TrayIcon(guid, hwnd)
+using var icon = IconHelper.LoadIconFromFile("assets/simple_icon.ico"); 
+// var windowMessage = PInvoke.RegisterWindowMessage($"TrayIconWindowMessage-{guid}");
+const uint windowMessage = PInvoke.WM_USER + 1;
+var trayIcon = new TrayIcon(guid, hwnd, windowMessage)
 {
     Tooltip = "Hello, Windows!",
     Icon = (HICON)icon.DangerousGetHandle(),
@@ -90,7 +92,11 @@ static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
         case PInvoke.WM_DESTROY:
             PInvoke.PostQuitMessage(0);
             break;
-        
+
+        case windowMessage:
+            Console.WriteLine("Received tray icon message.");
+            break;
+
         default:
             return PInvoke.DefWindowProc(hwnd, msg, wParam, lParam);
     }

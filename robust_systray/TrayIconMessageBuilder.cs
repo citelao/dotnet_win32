@@ -99,7 +99,16 @@ internal class TrayIconMessageBuilder
                 //
                 // https://stackoverflow.com/q/41649303/788168
                 uVersion = PInvoke.NOTIFYICON_VERSION_4
-            }
+            },
+
+            // Unused
+            dwInfoFlags = 0,
+            dwState = 0,
+            dwStateMask = 0,
+            hBalloonIcon = default,
+            szInfo = null,
+            szInfoTitle = null,
+            uID = 0,
         };
     }
 }

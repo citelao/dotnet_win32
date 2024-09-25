@@ -2,6 +2,7 @@ Shell_NotifyIcon
 NOTIFYICON_VERSION_4
 NOTIFY_ICON_DATA_FLAGS
 
+LoadImage
 LoadIcon
 IDI_*
 

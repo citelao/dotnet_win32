@@ -63,10 +63,11 @@ unsafe
 }
 
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
+// using var icon = IconHelper.LoadIconFromFile("icon.ico");
 var trayIcon = new TrayIcon(guid, hwnd)
 {
     Tooltip = "Hello, Windows!",
-    Icon = PInvoke.LoadIcon(HINSTANCE.Null, PInvoke.IDI_ASTERISK)
+    Icon = IconHelper.LoadSystemIcon(PInvoke.IDI_ASTERISK),
 };
 
 Console.WriteLine("Starting message loop...");
@@ -95,22 +96,4 @@ static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
     }
 
     return new LRESULT(0);
-}
-
-// Adapted directly from:
-// https://github.com/microsoft/CsWin32/blob/99ddd314ea359d3a97afa82c735b6a25eb25ea32/test/WinRTInteropTest/Program.cs#L144
-class NoReleaseSafeHandle : SafeHandle
-{
-    public NoReleaseSafeHandle(int value)
-        : base(IntPtr.Zero, true)
-    {
-        this.SetHandle(new IntPtr(value));
-    }
-
-    public override bool IsInvalid => throw new NotImplementedException();
-
-    protected override bool ReleaseHandle()
-    {
-        return true;
-    }
 }

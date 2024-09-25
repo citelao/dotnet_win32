@@ -11,6 +11,7 @@ internal class IconHelper
     public static SafeFileHandle LoadIconFromFile(string path)
     {
         // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
+        // See also: https://github.com/ollama/ollama/blob/main/app/tray/wintray/tray.go#L450
         var safeIconHandle = PInvoke.LoadImage(
             NoReleaseSafeHandle.Null,
             path,

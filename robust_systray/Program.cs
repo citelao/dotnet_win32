@@ -63,12 +63,18 @@ unsafe
 }
 
 var guid = Guid.Parse("bc540dbe-f04e-4c1c-a5a0-01b32095b04c");
-// using var icon = IconHelper.LoadIconFromFile("icon.ico");
+
+// Print current working directory
+var cwd = System.IO.Directory.GetCurrentDirectory();
+Console.WriteLine($"Current working directory: {cwd}");
+
+using var icon = IconHelper.LoadIconFromFile("assets/simple_icon.ico");
 var trayIcon = new TrayIcon(guid, hwnd)
 {
     Tooltip = "Hello, Windows!",
-    Icon = IconHelper.LoadSystemIcon(PInvoke.IDI_ASTERISK),
+    Icon = (HICON)icon.DangerousGetHandle() //IconHelper.LoadSystemIcon(PInvoke.IDI_ASTERISK),
 };
+trayIcon.Icon = (HICON)icon.DangerousGetHandle();
 
 Console.WriteLine("Starting message loop...");
 Console.WriteLine("Press Ctrl-C to exit.");

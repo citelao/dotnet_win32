@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Win32.SafeHandles;
 using Windows.Win32;
 using Windows.Win32.Foundation;
@@ -19,6 +20,11 @@ internal class IconHelper
             // TODO: LR_DEFAULTSIZE?
             IMAGE_FLAGS.LR_LOADFROMFILE
         );
+
+        if (safeIconHandle.IsInvalid)
+        {
+            throw new Win32Exception();
+        }
 
         return safeIconHandle;
     }

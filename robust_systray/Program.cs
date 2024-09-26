@@ -94,7 +94,7 @@ static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case windowMessage:
-            Console.WriteLine("Received tray icon message.");
+            Console.WriteLine($"Tray: {hwnd} {msg} {wParam} {lParam}");
             break;
 
         default:

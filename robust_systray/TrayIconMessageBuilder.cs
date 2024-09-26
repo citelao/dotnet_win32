@@ -104,6 +104,7 @@ internal class TrayIconMessageBuilder
                 // app much richer window messages & more control over the icon tooltip.
                 //
                 // https://stackoverflow.com/q/41649303/788168
+                // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyicona#remarks
                 uVersion = PInvoke.NOTIFYICON_VERSION_4
             },
 

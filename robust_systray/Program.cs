@@ -94,7 +94,42 @@ static LRESULT WndProc(HWND hwnd, uint msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case windowMessage:
-            Console.WriteLine($"Tray: {hwnd} {msg} {wParam} {lParam}");
+            var trueMessage = (nuint)Win32Macros.LOWORD(lParam);
+            var iconId = (nuint)Win32Macros.HIWORD(lParam);
+            var x = Win32Macros.GET_X_LPARAM((nint)wParam.Value);
+            var y = Win32Macros.GET_Y_LPARAM((nint)wParam.Value);
+            Console.WriteLine($"Tray: {hwnd} {msg} {wParam} {lParam} (msg: {trueMessage}; iconId: {iconId}; x: {x}; y: {y})");
+            switch (trueMessage)
+            {
+                case PInvoke.NIN_BALLOONHIDE:
+                    Console.WriteLine($"\tBalloonHide");
+                    break;
+                case PInvoke.NIN_BALLOONSHOW:
+                    Console.WriteLine($"\tBalloonShow");
+                    break;
+                case PInvoke.NIN_BALLOONTIMEOUT:
+                    Console.WriteLine($"\tBalloonTimeout");
+                    break;
+                case PInvoke.NIN_BALLOONUSERCLICK:
+                    Console.WriteLine($"\tBalloonUserClick");
+                    break;
+                case PInvoke.NIN_POPUPCLOSE:
+                    Console.WriteLine($"\tPopupClose");
+                    break;
+                case PInvoke.NIN_POPUPOPEN:
+                    Console.WriteLine($"\tPopupOpen");
+                    break;
+                case PInvoke.NIN_SELECT:
+                    Console.WriteLine($"\tSelect");
+                    break;
+                case PInvoke.WM_MOUSEMOVE:
+                    Console.WriteLine($"\tMouseMove");
+                    break;
+                default:
+                    // TODO: still a bunch more
+                    Console.WriteLine($"\tUnknown: {trueMessage}");
+                    break;
+            }
             break;
 
         default:

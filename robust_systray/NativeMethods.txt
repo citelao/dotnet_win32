@@ -2,6 +2,15 @@ Shell_NotifyIcon
 NOTIFYICON_VERSION_4
 NOTIFY_ICON_DATA_FLAGS
 
+NIN_*
+
+// Not supported yet
+// https://github.com/microsoft/CsWin32/issues/1194
+// LOWORD
+// HIWORD
+// GET_X_LPARAM
+// GET_Y_LPARAM
+
 LoadImage
 LoadIcon
 IDI_*
